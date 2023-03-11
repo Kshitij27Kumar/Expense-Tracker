@@ -34,6 +34,25 @@ addTransaction = (e) => {
   }
 }
 
+generateID = () => {
+  return Math.floor(Math.random() * 1000000)
+}
+
+addTransactionDOM = (transaction) => {
+  const sign = transaction.amount > 0 ? '+' : '-'
+  const item = document.createElement('li')
+
+  item.classList.add(transaction.amount < 0 ? 'minus' : 'plus')
+
+  item.innerHTML = `${transaction.text}<span>${sign}${Math.abs(
+    transaction.amount
+  )}</span><button class="delete-btn" onClick="remove Transaction(${
+    transaction.id
+  })">x</button>`
+
+  list.appendChild(item)
+}
+
 init = () => {
   list.innerHTML = ''
   transactions.forEach(addTransactionDOM)
