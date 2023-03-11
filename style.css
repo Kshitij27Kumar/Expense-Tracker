@@ -126,6 +126,9 @@ input[type='text'],
   border-right: 5px solid #c0392b;
 }
 
+.list li.plus {
+  border-right: 5px solid #50c878;
+}
 .delete-btn {
   cursor: pointer;
   background-color: #e74c3c;
@@ -138,7 +141,7 @@ input[type='text'],
   top: 50%;
   left: 0;
   transform: translate(-100%, -50%);
-  opacity: 0;
+  opacity: 1;
   transition: opacity 0.3s ease;
 }
 

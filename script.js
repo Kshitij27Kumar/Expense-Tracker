@@ -6,18 +6,18 @@ const balance = document.getElementById('balance'),
   text = document.getElementById('text'),
   amount = document.getElementById('amount')
 
-const localStorageTransaction = JSON.parse(localStorage.getItem('transactions'))
+const localStorageTransactions = JSON.parse(
+  localStorage.getItem('transactions')
+)
 
 let transactions =
-  localStorage.getItem('transactions') !== null ? localStorageTransaction : []
+  localStorage.getItem('transactions') !== null ? localStorageTransactions : []
 
-addTransaction = (e) => {
+function addTransaction(e) {
   e.preventDefault()
 
-  if (text.value.trim() === '') {
-    alert('Please add text')
-  } else if (amount.value.trim === '') {
-    alert('Please add amount')
+  if (text.value.trim() === '' || amount.value.trim() === '') {
+    alert('Please add text and amount')
   } else {
     const transaction = {
       id: generateID(),
@@ -34,11 +34,11 @@ addTransaction = (e) => {
   }
 }
 
-generateID = () => {
+function generateID() {
   return Math.floor(Math.random() * 1000000)
 }
 
-addTransactionDOM = (transaction) => {
+function addTransactionDOM(transaction) {
   const sign = transaction.amount > 0 ? '+' : '-'
   const item = document.createElement('li')
 
@@ -53,40 +53,39 @@ addTransactionDOM = (transaction) => {
   list.appendChild(item)
 }
 
-updateValues = () => {
+function updateValues() {
   const amounts = transactions.map((transaction) => transaction.amount)
 
-  const total = amounts.reduce((acc, item) => ((acc += item), 0)).toFixed(2)
+  const total = amounts.reduce((acc, item) => (acc += Number(item)), 0)
+  balance.innerHTML = `$${total}`
 
   const income = amounts
     .filter((item) => item > 0)
-    .reduce((acc, item) => ((acc += item), 0))
-    .toFixed(2)
+    .reduce((acc, item) => (acc += Number(item)), 0)
+  money_plus.innerHTML = `$${income}`
 
-  const expense = amounts
-    .filter((item) => item < 0)
-    .reduce((acc, item) => ((acc += item), 0) * -1)
-    .toFixed(2)
-
-  balance.innerHTML = `${total}`
-  money_minus.innerHTML = `${expense}`
-  money_plus.innerHTML = `${income}`
+  if (amounts.length) {
+    const expense = amounts
+      .filter((item) => item < 0)
+      .reduce((acc, item) => ((acc += Number(item)), 0) * -1)
+    money_minus.innerHTML = `$${income - total}`
+  }
 }
 
-removeTransaction = (id) => {
+function removeTransaction(id) {
   transactions = transactions.filter((transaction) => transaction.id !== id)
   updateLocalStorage()
   init()
 }
 
-updateLocalStorage = () => {
+function updateLocalStorage() {
   localStorage.setItem('transactions', JSON.stringify(transactions))
 }
 
-init = () => {
+function init() {
   list.innerHTML = ''
   transactions.forEach(addTransactionDOM)
   updateValues()
 }
-init()
+//init()
 form.addEventListener('submit', addTransaction)
