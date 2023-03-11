@@ -46,7 +46,7 @@ addTransactionDOM = (transaction) => {
 
   item.innerHTML = `${transaction.text}<span>${sign}${Math.abs(
     transaction.amount
-  )}</span><button class="delete-btn" onClick="remove Transaction(${
+  )}</span><button class="delete-btn" onClick="removeTransaction(${
     transaction.id
   })">x</button>`
 
@@ -71,6 +71,16 @@ updateValues = () => {
   balance.innerHTML = `${total}`
   money_minus.innerHTML = `${expense}`
   money_plus.innerHTML = `${income}`
+}
+
+removeTransaction = (id) => {
+  transactions = transactions.filter((transaction) => transaction.id !== id)
+  updateLocalStorage()
+  init()
+}
+
+updateLocalStorage = () => {
+  localStorage.setItem('transactions', JSON.stringify(transactions))
 }
 
 init = () => {
